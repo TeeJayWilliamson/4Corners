@@ -20,6 +20,7 @@ body {
     color: var(--color-text);
     margin: 0;
     min-height: 100vh;
+    overflow-x: hidden; /* FIX: Prevents horizontal scroll from the off-screen drawer */
 }
 
 header {
@@ -48,12 +49,14 @@ h1 {
     width: 100%; 
 }
 
+/* #controls is now only the centered bar for name/start button */
 #controls {
-    width: 800px; 
+    width: 880px; 
+    max-width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center the one remaining content block */
     align-items: center;
-    padding: 20px 30px;
+    padding: 20px 30px; 
     background-color: var(--color-mid-bg);
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -61,6 +64,49 @@ h1 {
     border: 1px solid #3c3e53;
     position: relative; 
     z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* Center Group: Name Input and Start Button */
+#pre-game-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* --- Compact Header UI (Always Fixed to Top Right) --- */
+#compact-header-ui {
+    position: fixed; 
+    top: 20px;
+    right: 20px;
+    transform: translateY(0);
+    z-index: 20; 
+    display: flex; 
+    align-items: center;
+    gap: 15px;
+    
+    /* Background styling for visual separation */
+    padding: 10px 15px;
+    background-color: rgba(39, 41, 61, 0.8); 
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    border: 1px solid #4a90e255;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* --- Game Active State: Hide Main Controls Bar --- */
+body.game-active #controls {
+    /* Hide the entire background bar and its content */
+    padding: 0;
+    margin: 0;
+    height: 0;
+    overflow: hidden;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    display: block; 
+    width: 100%;
 }
 
 .control-group {
@@ -136,8 +182,8 @@ h1 {
     font-size: 1em;
     font-weight: 600;
     color: var(--color-accent-blue);
-    border-left: 1px solid #454761;
-    padding-left: 15px; 
+    padding-left: 0; 
+    border-left: none;
 }
 
 /* DEDICATED STATUS CONTAINER */
@@ -329,7 +375,7 @@ h1 {
 .modal {
     display: none; 
     position: fixed; 
-    z-index: 30; /* Increased z-index for modals to sit on top of everything */
+    z-index: 30; 
     left: 0;
     top: 0;
     width: 100%; 
@@ -407,7 +453,7 @@ h1 {
     border-color: var(--color-accent-green);
     max-width: 500px;
     padding: 40px;
-    padding-top: 50px; /* Added padding to make space for the close button */
+    padding-top: 50px; 
 }
 
 /* FIX: Reposition the close button specifically for the win modal */
@@ -456,9 +502,10 @@ h1 {
     width: 300px;
     height: 100%;
     background-color: var(--color-dark-bg);
-    z-index: 25; /* Below modals (30), above game elements (10) */
+    z-index: 25; 
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-    transform: translateX(300px); /* Initially off-screen */
+    /* CRITICAL FIX: Use 100% to ensure full hiding on various screen sizes */
+    transform: translateX(100%); 
     transition: transform 0.3s ease-out;
     padding: 10px;
     overflow-y: auto;
@@ -480,22 +527,13 @@ h1 {
         gap: 25px;
     }
 
-    /* Controls collapse slightly */
-    #controls, #human-status-container {
+    /* Status container adjusts */
+    #human-status-container {
         width: 90%;
         max-width: 550px;
         padding: 15px;
-        flex-wrap: wrap; 
-        justify-content: center;
-        gap: 10px 20px;
     }
     
-    /* Player Count moves to the bottom right */
-    #player-count {
-        border-left: none;
-        padding-left: 0;
-    }
-
     /* Game board takes full width and maintains aspect ratio */
     #game-container {
         width: 100%;
@@ -506,6 +544,32 @@ h1 {
     #lists-container {
         width: 100%;
         flex-direction: column;
+    }
+    
+    /* Mobile control bar fixes */
+    #controls {
+        padding: 15px;
+        width: 90%;
+        max-width: 550px;
+    }
+    
+    /* Pre-game center adjusts to fit on smaller screen */
+    #pre-game-center {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+        width: 100%;
+    }
+    
+    /* Compact UI positioning for smaller screens */
+    #compact-header-ui {
+        top: 10px;
+        right: 10px;
+        /* Force buttons to stack nicely if space runs out */
+        flex-wrap: wrap; 
+        justify-content: flex-end;
+        gap: 5px;
+        padding: 5px 10px;
     }
 } 
 
@@ -525,14 +589,26 @@ h1 {
         transform: translateX(0); 
         padding: 0;
         overflow-y: visible;
-        z-index: 5; /* Low z-index so modals (z-index 30) appear on top */
+        z-index: 5; 
         background-color: transparent; 
     }
     #lists-container {
         width: 300px;
     }
+    /* Hide button on desktop only when game is not active */
     #toggle-drawer-button {
-        display: none; /* Hide button on desktop */
+         display: inline-block;
+    }
+    
+    /* On desktop, hide the player drawer button since lists are visible */
+    #toggle-drawer-button {
+        display: none; 
+    }
+    
+    /* Keep all other buttons visible in the compact header */
+    #compact-header-ui {
+        justify-content: flex-end; /* Push Rules to the right */
+        gap: 15px;
     }
 }
 
@@ -550,7 +626,7 @@ h1 {
         font-size: 1.2em;
     }
 
-    /* Controls reflow to a single column */
+    /* Controls reflow to a single column pre-game */
     #controls {
         flex-direction: column;
         align-items: stretch;
@@ -571,12 +647,6 @@ h1 {
         width: 100%;
         text-align: center;
         padding: 10px;
-    }
-
-    #player-count {
-        border-top: 1px solid #454761;
-        padding-top: 10px;
-        margin-top: 5px;
     }
 
     /* Game board size constraint */
@@ -608,6 +678,9 @@ h1 {
     /* Adjust drawer width on very small screens */
     #player-drawer {
         width: 80%; 
-        transform: translateX(80%);
+        transform: translateX(100%); 
+    }
+    #player-drawer.open {
+        transform: translateX(0);
     }
 }

@@ -15,6 +15,7 @@ const closeButton = document.querySelector('.close-button');
 const playerCountDisplay = document.getElementById('player-count');
 const humanChoiceStatus = document.getElementById('human-choice-status');
 const playerNameInput = document.getElementById('player-name-input');
+const playerNameGroup = document.getElementById('player-name-group'); // Reference the wrapper
 const cornerElements = [
     document.getElementById('corner-1'),
     document.getElementById('corner-2'),
@@ -25,14 +26,14 @@ const seekerListElement = document.getElementById('seeker-list');
 const playerListElement = document.getElementById('player-list');
 const eliminatedListElement = document.getElementById('eliminated-list');
 
-// New Winner Modal DOM elements
+// Winner Modal DOM elements
 const winModal = document.getElementById('win-modal');
 const closeWinModalButton = document.getElementById('close-win-modal');
 const winPlayAgainButton = document.getElementById('win-play-again-button');
 const winTitle = document.getElementById('win-title');
 const winMessage = document.getElementById('win-message');
 
-// New Drawer DOM elements
+// Drawer DOM elements
 const toggleDrawerButton = document.getElementById('toggle-drawer-button');
 const playerDrawer = document.getElementById('player-drawer');
 
@@ -113,6 +114,15 @@ function startGame() {
     statusMessage.textContent = `${seekerPlayerId} is the starting Seeker.`;
     startButton.disabled = true;
     playerNameInput.disabled = true;
+    
+    // HIDE NAME INPUT
+    if (playerNameGroup) {
+        playerNameGroup.style.display = 'none';
+    }
+    
+    // NEW: Activate the compact header UI (This class is used to hide the main #controls bar)
+    document.body.classList.add('game-active'); 
+    
     startRound();
 }
 
@@ -486,6 +496,14 @@ function endGame(winnerId, isSeekerWinner = false) {
     startButton.disabled = false;
     playerNameInput.disabled = false;
     updateHumanStatusMessage('Game finished.');
+    
+    // SHOW NAME INPUT
+    if (playerNameGroup) {
+        playerNameGroup.style.display = 'flex'; 
+    }
+    
+    // NEW: Deactivate the compact header UI
+    document.body.classList.remove('game-active'); 
 }
 
 // --- Event Listeners ---
