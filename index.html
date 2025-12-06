@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Four Corners Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <h1>Four Corners</h1>
+        <p id="status-message">Waiting for round to start...</p>
+    </header>
+
+    <div id="controls">
+        <div class="control-group">
+            <label for="player-name-input">Your Name:</label>
+            <input type="text" id="player-name-input" placeholder="Enter your name">
+        </div>
+        <button id="start-button">Start Game</button>
+        <button id="rules-button" class="action-button">Rules</button>
+        <div class="control-group">
+            <p id="player-count">Players Remaining: 0</p>
+        </div>
+    </div>
+
+    <div id="human-status-container">
+        <p id="human-choice-status">Your status: N/A</p>
+    </div>
+
+    <div id="game-and-lists-container">
+        <div id="game-container">
+            <div class="corner" id="corner-1" data-corner="1">Corner 1</div>
+            <div class="corner" id="corner-2" data-corner="2">Corner 2</div>
+            <div class="corner" id="corner-3" data-corner="3">Corner 3</div>
+            <div class="corner" id="corner-4" data-corner="4">Corner 4</div>
+        </div>
+
+        <div id="lists-container">
+            <div id="seeker-list" class="player-role-list">
+                <h2>Seeker</h2>
+                <p>Waiting for game to start...</p>
+            </div>
+            <div id="player-list" class="player-role-list">
+                <h2>Active Players</h2>
+                <p>Waiting for game to start...</p>
+            </div>
+            <div id="eliminated-list" class="player-role-list">
+                <h3>Eliminated Players</h3>
+                <p>Waiting for game to start...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="rules-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Rules of Four Corners</h2>
+
+            <p>The goal is to be the **last player remaining** or the **Seeker** if everyone else is caught.</p>
+
+            <hr>
+
+            <h3>Game Flow 🏃</h3>
+            <ol>
+                <li>One player is randomly selected as the **Seeker**. Everyone else is an **Active Player**.</li>
+                <li>The Seeker closes their eyes (virtually counts down for **5 seconds**).</li>
+                <li>**Active Players** must simultaneously select one of the four corners (1, 2, 3, or 4).</li>
+                <li>After the countdown, the **Seeker** points to one of the four corners.</li>
+            </ol>
+
+            <hr>
+
+            <h3>Elimination & Lives 🔵</h3>
+            <ul>
+                <li>If an **Active Player** is in the corner the Seeker points to, they are **eliminated**.</li>
+                <li>Active Players are marked with a **🔵** (blue circle) next to their name, indicating they **haven't been eliminated yet** (their "Final Life").</li>
+                <li>Once eliminated, the **🔵** disappears, and they are out of the game.</li>
+            </ul>
+
+            <hr>
+
+            <h3>The Rare Comeback (Conditional Revival) 🎲</h3>
+            <p>If the Seeker points to an empty corner and misses **two rounds in a row**, **one random player** from the eliminated list is instantly revived and rejoins the game!</p>
+
+            <hr>
+
+            <h3>Winning 🎉</h3>
+            <ul>
+                <li>**Standard Win:** The last Active Player standing wins.</li>
+                <li>**Showdown:** If only one Active Player remains, it's the **FINAL SHOWDOWN**. If the Seeker catches them, the **Seeker wins**. If the Seeker misses, the **Last Player wins**.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="win-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-win-modal" class="close-button">&times;</span>
+            <h2 id="win-title">YOU WIN! 🎉</h2>
+            <p id="win-message">Congratulations, you've outsmarted the computers!</p>
+            <button id="win-play-again-button" class="action-button">Play Again</button>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
