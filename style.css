@@ -15,7 +15,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px; /* Reduced padding for mobile */
+    padding: 20px; 
     background-color: var(--color-dark-bg);
     color: var(--color-text);
     margin: 0;
@@ -29,7 +29,7 @@ header {
 
 h1 {
     color: var(--color-accent-blue);
-    font-size: 3em; /* Adjusted for potential smaller screens */
+    font-size: 3em; 
     font-weight: 700;
     margin-bottom: 5px;
     letter-spacing: 2px;
@@ -45,7 +45,7 @@ h1 {
     text-align: center;
     padding: 10px 0;
     border-bottom: 2px solid var(--color-mid-bg);
-    width: 100%; /* Ensure it spans the width */
+    width: 100%; 
 }
 
 #controls {
@@ -59,6 +59,8 @@ h1 {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     margin-bottom: 15px;
     border: 1px solid #3c3e53;
+    position: relative; 
+    z-index: 10;
 }
 
 .control-group {
@@ -77,7 +79,7 @@ h1 {
     padding: 10px 15px;
     border: 2px solid #454761;
     border-radius: 8px;
-    width: 120px; /* Adjusted width */
+    width: 120px; 
     background-color: #313349;
     color: var(--color-text);
     transition: border-color 0.2s;
@@ -90,12 +92,12 @@ h1 {
 }
 
 #start-button, .action-button {
-    padding: 12px 16px; /* Slightly adjusted padding */
+    padding: 12px 16px; 
     color: var(--color-dark-bg);
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1em; /* Adjusted font size */
+    font-size: 1em; 
     font-weight: 700;
     transition: background-color 0.2s, transform 0.1s;
 }
@@ -135,7 +137,7 @@ h1 {
     font-weight: 600;
     color: var(--color-accent-blue);
     border-left: 1px solid #454761;
-    padding-left: 15px; /* Adjusted padding */
+    padding-left: 15px; 
 }
 
 /* DEDICATED STATUS CONTAINER */
@@ -195,7 +197,6 @@ h1 {
     text-transform: uppercase;
 }
 
-/* FIX: Forces clicks through child elements (like text or tokens) to hit the parent .corner div */
 .corner > * {
     pointer-events: none;
 }
@@ -254,7 +255,7 @@ h1 {
 
 /* --- Lists Container (now inside the drawer) --- */
 #lists-container {
-    width: 100%; /* Now takes full drawer width */
+    width: 100%; 
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -276,13 +277,59 @@ h1 {
     margin-top: 0;
     font-weight: 700;
 }
-/* ... rest of the list styles are unchanged ... */
+
+#player-list h2 {
+    color: var(--color-accent-green); 
+    font-size: 1.4em;
+    border-bottom: 2px solid #555877;
+    padding-bottom: 8px;
+    margin-top: 0;
+    font-weight: 700;
+}
+
+#eliminated-list h3 {
+    color: var(--color-accent-red); 
+    font-size: 1.3em;
+    border-bottom: 2px solid #555877;
+    padding-bottom: 8px;
+    margin-top: 0;
+    font-weight: 700;
+}
+
+.player-role-list p {
+    margin: 8px 0;
+    padding: 0;
+    font-size: 1.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+}
+
+#seeker-list p {
+    font-weight: 600;
+    color: var(--color-accent-gold); 
+}
+
+#player-list p:nth-child(even) {
+    background-color: #27293d; 
+    padding: 4px 8px;
+    margin: 0 -8px 8px -8px; 
+    border-radius: 4px;
+}
+
+.eliminated-player-name {
+    color: #7f8c8d; 
+    text-decoration: line-through;
+    font-style: italic;
+    font-weight: 300;
+}
 
 /* --- MODAL STYLES --- */
 .modal {
     display: none; 
     position: fixed; 
-    z-index: 20; 
+    z-index: 30; /* Increased z-index for modals to sit on top of everything */
     left: 0;
     top: 0;
     width: 100%; 
@@ -305,28 +352,111 @@ h1 {
     color: var(--color-text);
     text-align: center;
 }
-/* ... rest of the modal styles are unchanged ... */
 
+.modal-content h2 {
+    color: var(--color-accent-blue);
+    font-size: 2em;
+    text-align: center;
+    margin-top: 0;
+    border-bottom: 2px solid #555877;
+    padding-bottom: 10px;
+}
+
+.modal-content h3 {
+    color: var(--color-accent-green);
+    margin-top: 20px;
+}
+
+.modal-content ul, .modal-content ol {
+    text-align: left; 
+    margin-left: 20px;
+    padding: 0;
+}
+
+.modal-content li {
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.modal-content hr {
+    border-color: #555877;
+    margin: 15px 0;
+}
+
+.close-button {
+    color: var(--color-accent-red);
+    float: right;
+    font-size: 38px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 /* WINNER MODAL SPECIFIC STYLES */
 #win-modal .modal-content {
     border-color: var(--color-accent-green);
     max-width: 500px;
     padding: 40px;
+    padding-top: 50px; /* Added padding to make space for the close button */
 }
-/* ... rest of the win modal styles are unchanged ... */
+
+/* FIX: Reposition the close button specifically for the win modal */
+#win-modal .close-button {
+    color: var(--color-accent-red);
+    position: absolute;
+    top: 10px; 
+    right: 20px; 
+    font-size: 32px; 
+}
+
+
+#win-title {
+    color: var(--color-accent-green);
+    font-size: 2.8em;
+    padding-bottom: 10px;
+    border-bottom: none;
+}
+
+#win-message {
+    font-size: 1.3em;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+#win-play-again-button {
+    background-color: var(--color-accent-green);
+    color: var(--color-dark-bg);
+    margin-top: 20px;
+    font-size: 1.2em;
+    padding: 15px 30px;
+    box-shadow: 0 4px 10px rgba(80, 227, 194, 0.4);
+}
+
+#win-play-again-button:hover {
+    background-color: #43c1a8;
+}
 
 /* --- PLAYER LIST SIDE DRAWER STYLES (Mobile Only) --- */
 
 #player-drawer {
-    /* Fixed overlay to cover the screen */
+    /* Fixed overlay to cover the screen on MOBILE */
     position: fixed;
     top: 0;
     right: 0;
     width: 300px;
     height: 100%;
     background-color: var(--color-dark-bg);
-    z-index: 25; /* Above modals */
+    z-index: 25; /* Below modals (30), above game elements (10) */
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
     transform: translateX(300px); /* Initially off-screen */
     transition: transform 0.3s ease-out;
@@ -359,15 +489,6 @@ h1 {
         justify-content: center;
         gap: 10px 20px;
     }
-
-    /* Player Name input width adjusted */
-    .control-group:first-child {
-        flex-grow: 1; 
-    }
-    #player-name-input {
-        width: 100px;
-        flex-grow: 1;
-    }
     
     /* Player Count moves to the bottom right */
     #player-count {
@@ -382,7 +503,6 @@ h1 {
         max-height: 500px;
     }
     
-    /* On small screens, hide the original lists container and let the drawer handle it */
     #lists-container {
         width: 100%;
         flex-direction: column;
@@ -391,20 +511,22 @@ h1 {
 
 /* Desktop Override (Min 901px) - Ensure list container is inline on desktop */
 @media (min-width: 901px) {
-    /* Lists are back in their original position */
+    /* Lists are back in their original, static position */
     #game-and-lists-container {
         display: flex;
         width: 880px; 
     }
-    /* Hide the drawer system on desktop, show the lists inline */
+    /* FIX: Ensure drawer behaves like a regular div on desktop and doesn't interfere with z-index */
     #player-drawer {
         position: static;
-        width: 300px;
+        width: 300px; 
         height: auto;
         box-shadow: none;
         transform: translateX(0); 
         padding: 0;
         overflow-y: visible;
+        z-index: 5; /* Low z-index so modals (z-index 30) appear on top */
+        background-color: transparent; 
     }
     #lists-container {
         width: 300px;
@@ -485,7 +607,7 @@ h1 {
     
     /* Adjust drawer width on very small screens */
     #player-drawer {
-        width: 80%; /* Takes most of the screen */
+        width: 80%; 
         transform: translateX(80%);
     }
 }
