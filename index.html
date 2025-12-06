@@ -22,6 +22,7 @@
             <input type="text" id="player-name-input" placeholder="Enter your name">
         </div>
         <button id="start-button">Start Game</button>
+        <button id="toggle-drawer-button" class="action-button">📊 Players (5)</button> 
         <button id="rules-button" class="action-button">Rules</button>
         <div class="control-group">
             <p id="player-count">Players Remaining: 0</p>
@@ -40,20 +41,23 @@
             <div class="corner" id="corner-4" data-corner="4">Corner 4</div>
         </div>
 
-        <div id="lists-container">
-            <div id="seeker-list" class="player-role-list">
-                <h2>Seeker</h2>
-                <p>Waiting for game to start...</p>
-            </div>
-            <div id="player-list" class="player-role-list">
-                <h2>Active Players</h2>
-                <p>Waiting for game to start...</p>
-            </div>
-            <div id="eliminated-list" class="player-role-list">
-                <h3>Eliminated Players</h3>
-                <p>Waiting for game to start...</p>
+        <div id="player-drawer">
+            <div id="lists-container">
+                <div id="seeker-list" class="player-role-list">
+                    <h2>Seeker</h2>
+                    <p>Waiting for game to start...</p>
+                </div>
+                <div id="player-list" class="player-role-list">
+                    <h2>Active Players</h2>
+                    <p>Waiting for game to start...</p>
+                </div>
+                <div id="eliminated-list" class="player-role-list">
+                    <h3>Eliminated Players</h3>
+                    <p>Waiting for game to start...</p>
+                </div>
             </div>
         </div>
+        
     </div>
 
     <div id="rules-modal" class="modal">

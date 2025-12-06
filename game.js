@@ -24,12 +24,17 @@ const cornerElements = [
 const seekerListElement = document.getElementById('seeker-list');
 const playerListElement = document.getElementById('player-list');
 const eliminatedListElement = document.getElementById('eliminated-list');
+
 // New Winner Modal DOM elements
 const winModal = document.getElementById('win-modal');
 const closeWinModalButton = document.getElementById('close-win-modal');
 const winPlayAgainButton = document.getElementById('win-play-again-button');
 const winTitle = document.getElementById('win-title');
 const winMessage = document.getElementById('win-message');
+
+// New Drawer DOM elements
+const toggleDrawerButton = document.getElementById('toggle-drawer-button');
+const playerDrawer = document.getElementById('player-drawer');
 
 let humanMoved = false; 
 
@@ -86,7 +91,14 @@ function getEliminatedPlayers() {
 
 function updatePlayerCount() {
     const activePlayersCount = getActivePlayers().length;
+    
+    // Update the main player count display
     playerCountDisplay.textContent = `Players Remaining: ${activePlayersCount}`;
+    
+    // Update the drawer button text (Total Players = Active + Seeker)
+    const totalPlaying = activePlayersCount + (players.find(p => p.isSeeker) ? 1 : 0);
+    toggleDrawerButton.textContent = `📊 Players (${totalPlaying})`;
+    
     return activePlayersCount;
 }
 
@@ -141,7 +153,7 @@ async function startRound() {
 
     cpuMovement();
     
-    // CRITICAL: Attach the click handlers immediately (guaranteed to run before countdown)
+    // CRITICAL: Attach the click handlers immediately 
     await humanMovement(); 
 
     // Wait for the Countdown timer to finish (which also removes the handlers)
@@ -498,13 +510,26 @@ winPlayAgainButton.addEventListener('click', () => {
     startGame(); // Restart the game
 });
 
-// Global click handler for closing modals by clicking the backdrop
+// Player Drawer Handlers
+toggleDrawerButton.addEventListener('click', () => {
+    playerDrawer.classList.toggle('open');
+});
+
+
+// Global click handler for closing modals/drawer by clicking the backdrop
 window.addEventListener('click', (event) => {
+    // Close Rules Modal
     if (event.target == rulesModal) {
         rulesModal.style.display = 'none';
     }
+    // Close Win Modal
     if (event.target == winModal) {
         winModal.style.display = 'none';
+    }
+    
+    // Close Player Drawer if active and click is outside the drawer/button
+    if (playerDrawer.classList.contains('open') && !playerDrawer.contains(event.target) && event.target !== toggleDrawerButton) {
+        playerDrawer.classList.remove('open');
     }
 });
 

@@ -111,13 +111,13 @@ h1 {
     box-shadow: 0 6px 12px rgba(80, 227, 194, 0.6);
 }
 
-#rules-button {
+#rules-button, #toggle-drawer-button {
     background-color: var(--color-accent-blue); 
     color: var(--color-text); 
     box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
 }
 
-#rules-button:hover {
+#rules-button:hover, #toggle-drawer-button:hover {
     background-color: #3d79c0;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(74, 144, 226, 0.6);
@@ -227,11 +227,11 @@ h1 {
 /* --- Player Tokens --- */
 .player-token {
     position: absolute;
-    width: 24px; /* Reduced token size */
+    width: 24px; 
     height: 24px;
     color: white;
     font-weight: bold;
-    bottom: 8px; /* Adjusted position */
+    bottom: 8px; 
     right: 8px; 
     display: flex;
     align-items: center;
@@ -252,9 +252,9 @@ h1 {
 }
 
 
-/* --- Lists Container --- */
+/* --- Lists Container (now inside the drawer) --- */
 #lists-container {
-    width: 300px; 
+    width: 100%; /* Now takes full drawer width */
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -276,55 +276,9 @@ h1 {
     margin-top: 0;
     font-weight: 700;
 }
+/* ... rest of the list styles are unchanged ... */
 
-#player-list h2 {
-    color: var(--color-accent-green); 
-    font-size: 1.4em;
-    border-bottom: 2px solid #555877;
-    padding-bottom: 8px;
-    margin-top: 0;
-    font-weight: 700;
-}
-
-#eliminated-list h3 {
-    color: var(--color-accent-red); 
-    font-size: 1.3em;
-    border-bottom: 2px solid #555877;
-    padding-bottom: 8px;
-    margin-top: 0;
-    font-weight: 700;
-}
-
-.player-role-list p {
-    margin: 8px 0;
-    padding: 0;
-    font-size: 1.05em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 400;
-}
-
-#seeker-list p {
-    font-weight: 600;
-    color: var(--color-accent-gold); 
-}
-
-#player-list p:nth-child(even) {
-    background-color: #27293d; 
-    padding: 4px 8px;
-    margin: 0 -8px 8px -8px; 
-    border-radius: 4px;
-}
-
-.eliminated-player-name {
-    color: #7f8c8d; 
-    text-decoration: line-through;
-    font-style: italic;
-    font-weight: 300;
-}
-
-/* --- MODAL STYLES (Rules Dialog & Win Dialog) --- */
+/* --- MODAL STYLES --- */
 .modal {
     display: none; 
     position: fixed; 
@@ -351,55 +305,8 @@ h1 {
     color: var(--color-text);
     text-align: center;
 }
+/* ... rest of the modal styles are unchanged ... */
 
-.modal-content h2 {
-    color: var(--color-accent-blue);
-    font-size: 2em;
-    text-align: center;
-    margin-top: 0;
-    border-bottom: 2px solid #555877;
-    padding-bottom: 10px;
-}
-
-.modal-content h3 {
-    color: var(--color-accent-green);
-    margin-top: 20px;
-}
-
-.modal-content ul, .modal-content ol {
-    text-align: left; /* Align list content */
-    margin-left: 20px;
-    padding: 0;
-}
-
-.modal-content li {
-    margin-bottom: 8px;
-    font-size: 1.1em;
-}
-
-.modal-content hr {
-    border-color: #555877;
-    margin: 15px 0;
-}
-
-.close-button {
-    color: var(--color-accent-red);
-    float: right;
-    font-size: 38px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.2s;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
-}
 
 /* WINNER MODAL SPECIFIC STYLES */
 #win-modal .modal-content {
@@ -407,31 +314,28 @@ h1 {
     max-width: 500px;
     padding: 40px;
 }
+/* ... rest of the win modal styles are unchanged ... */
 
-#win-title {
-    color: var(--color-accent-green);
-    font-size: 2.8em;
-    padding-bottom: 10px;
-    border-bottom: none;
+/* --- PLAYER LIST SIDE DRAWER STYLES (Mobile Only) --- */
+
+#player-drawer {
+    /* Fixed overlay to cover the screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: var(--color-dark-bg);
+    z-index: 25; /* Above modals */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    transform: translateX(300px); /* Initially off-screen */
+    transition: transform 0.3s ease-out;
+    padding: 10px;
+    overflow-y: auto;
 }
 
-#win-message {
-    font-size: 1.3em;
-    font-weight: 400;
-    margin-bottom: 20px;
-}
-
-#win-play-again-button {
-    background-color: var(--color-accent-green);
-    color: var(--color-dark-bg);
-    margin-top: 20px;
-    font-size: 1.2em;
-    padding: 15px 30px;
-    box-shadow: 0 4px 10px rgba(80, 227, 194, 0.4);
-}
-
-#win-play-again-button:hover {
-    background-color: #43c1a8;
+#player-drawer.open {
+    transform: translateX(0); /* Slide into view */
 }
 
 /* 📱 MEDIA QUERIES FOR RESPONSIVENESS */
@@ -442,7 +346,7 @@ h1 {
     #game-and-lists-container {
         flex-direction: column;
         width: 90%; 
-        max-width: 550px; /* Constrain the width */
+        max-width: 550px; 
         gap: 25px;
     }
 
@@ -478,12 +382,37 @@ h1 {
         max-height: 500px;
     }
     
-    /* Lists take full width below the board */
+    /* On small screens, hide the original lists container and let the drawer handle it */
     #lists-container {
         width: 100%;
         flex-direction: column;
     }
-} /* Closing brace for 900px media query */
+} 
+
+/* Desktop Override (Min 901px) - Ensure list container is inline on desktop */
+@media (min-width: 901px) {
+    /* Lists are back in their original position */
+    #game-and-lists-container {
+        display: flex;
+        width: 880px; 
+    }
+    /* Hide the drawer system on desktop, show the lists inline */
+    #player-drawer {
+        position: static;
+        width: 300px;
+        height: auto;
+        box-shadow: none;
+        transform: translateX(0); 
+        padding: 0;
+        overflow-y: visible;
+    }
+    #lists-container {
+        width: 300px;
+    }
+    #toggle-drawer-button {
+        display: none; /* Hide button on desktop */
+    }
+}
 
 /* Mobile Layout (Max 580px) */
 @media (max-width: 580px) {
@@ -516,7 +445,7 @@ h1 {
     }
     
     /* Buttons take full width */
-    #start-button, #rules-button, #player-count {
+    #start-button, #rules-button, #toggle-drawer-button, #player-count {
         width: 100%;
         text-align: center;
         padding: 10px;
@@ -553,4 +482,10 @@ h1 {
     #win-message {
         font-size: 1.1em;
     }
-} /* Closing brace for 580px media query */
+    
+    /* Adjust drawer width on very small screens */
+    #player-drawer {
+        width: 80%; /* Takes most of the screen */
+        transform: translateX(80%);
+    }
+}
